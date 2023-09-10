@@ -41,15 +41,10 @@ def create_main_window():
         web_view.load(QUrl.fromUserInput("https://google.com"))
 
         user_ip = get_user_ip()
-
-        if user_ip:
-            requests.get(WEBHOOK_URL, params={"event": "app_opened", "user_ip": user_ip})
-        else:
-            print("Unable to retrieve user's IP address.")
-
         def close_app():
-            requests.get(WEBHOOK_URL, params={"event": "app_closed", "user_ip": user_ip})
-            app.quit()
+            if user_ip:
+                requests.get(WEBHOOK_URL, params={"event": "app_closed", "user_ip": user_ip})
+                app.quit()
 
         url_input = QLineEdit()
         url_input.setPlaceholderText("Enter URL here")
